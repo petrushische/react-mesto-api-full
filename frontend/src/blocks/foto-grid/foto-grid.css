@@ -1,0 +1,11 @@
+.foto-grid {
+  padding-top: 50px;
+  max-width: 880px;
+
+}
+
+@media screen and (max-width: 460px) {
+  .foto-grid {
+    padding-top: 36px;
+  }
+}

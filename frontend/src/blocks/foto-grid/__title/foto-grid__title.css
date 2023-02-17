@@ -1,0 +1,9 @@
+.foto-grid__title {
+  margin-left: 7.45%;
+  margin-top: 8.87%;
+  margin-bottom: 11%;
+  width: 87.23%;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}

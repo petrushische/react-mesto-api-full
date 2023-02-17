@@ -1,0 +1,10 @@
+.popup__close_avatar_delete {
+  margin-top: 184px;
+}
+
+@media screen and (max-width: 470px) {
+  .popup__close_avatar_delete {
+    position: absolute;
+    top: 15px;
+  }
+}
