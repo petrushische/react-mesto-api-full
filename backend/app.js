@@ -21,7 +21,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { login, createUser } = require('./controllers/user');
 
-const { PORT = 3000, MONGO_URL = 'mongodb://localhost:27017/mestodb' } = process.env;
+const { PORT = 3000, MONGO_URL = 'mongodb://localhost:27017/mestodb2' } = process.env;
 
 const app = express();
 
