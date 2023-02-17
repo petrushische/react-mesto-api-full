@@ -1,6 +1,6 @@
 const key = '419bb80a-4ebd-4553-87ef-7a869fedad61'
 
-const url = 'https://mesto.nomoreparties.co/v1/cohort-51'
+const url = 'https://api.PetroSellinum.nomoredomains.work'
 
 export class Api {
   constructor(options) {
