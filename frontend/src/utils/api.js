@@ -1,4 +1,4 @@
-const key = '419bb80a-4ebd-4553-87ef-7a869fedad61'
+const key = `Bearer ${localStorage.getItem('token')}`;
 
 const url = 'https://api.PetroSellinum.nomoredomains.work'
 
