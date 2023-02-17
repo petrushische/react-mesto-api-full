@@ -31,8 +31,6 @@ const allowedCors = [
   'localhost:3000',
 ];
 
-app.use(requestLogger); //  логгер запросов
-
 // eslint-disable-next-line consistent-return
 app.use((req, res, next) => {
   const { method } = req;
@@ -49,6 +47,8 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+app.use(requestLogger); //  логгер запросов
 
 app.post('/signin', express.json(), celebrate({
   body: Joi.object().keys({
