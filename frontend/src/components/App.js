@@ -16,36 +16,34 @@ import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 import * as Auth from '../utils/Author'
 
 function App() {
-
-
   const [currentUser, setCurrentUser] = React.useState({});
   useEffect(() => {
-    api.userInformationGet()
+    api.userInformationGet(localStorage.getItem('jwt'))
       .then((res) => {
         setCurrentUser(res)
       })
       .catch((err) => console.log(err))
 
 
-  }, [])
+  }, [localStorage.getItem('jwt')])
 
   //1
   const [cards, setCards] = React.useState([]);
   //2
   useEffect(() => {
 
-    api.cards()
+    api.cards(localStorage.getItem('jwt'))
       .then((res) => {
         setCards(res)
       })
       .catch((err) => console.log(`Ошибка${err}`))
 
 
-  }, [])
+  }, [localStorage.getItem('jwt')])
   //3
   function handleCardLike(card) {
     const isliked = card.likes.some(elem => elem._id === currentUser._id)
-    api.changeLikeCard(card._id, isliked)
+    api.changeLikeCard(card._id, isliked, localStorage.getItem('jwt'))
       .then((newCard) => {
         setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
       })
@@ -53,7 +51,7 @@ function App() {
   }
   //4
   function handleCardDelete(card) {
-    api.deleteCard(card._id)
+    api.deleteCard(card._id, localStorage.getItem('jwt'))
       .then((res) => {
         //////////////////////////////////////////////////////////////////////
         const newCard = cards.filter((elem) => elem._id !== card._id)
@@ -102,7 +100,7 @@ function App() {
   }
   // обновление данных пользователя
   function handleUpdateUser({ name, about }) {
-    api.userInformationPath({ name, about })
+    api.userInformationPath({ name, about }, localStorage.getItem('jwt'))
       .then((res) => {
         setCurrentUser(res)
         closeAllPopups()
@@ -113,7 +111,7 @@ function App() {
   }
   // обновление аватара
   function handleUpdateAvatar(avatar) {
-    api.changeAvatar(avatar)
+    api.changeAvatar(avatar, localStorage.getItem('jwt'))
       .then((res) => {
         setCurrentUser(res)
         closeAllPopups()
@@ -124,7 +122,7 @@ function App() {
   }
   // Новая карточка
   function handleNewCard({ name, src }) {
-    api.cardPost({ name, src })
+    api.cardPost({ name, src }, localStorage.getItem('jwt'))
       .then((res) => {
         setCards([res, ...cards])
         closeAllPopups()
@@ -138,7 +136,7 @@ function App() {
   const [checkValid, setCheckValid] = React.useState();
   const [infoTooltip, setInfoTooltip] = React.useState(false)
   const [loggedIn, setLoggedIn] = React.useState(false);
-  const [userData, setUserData] = React.useState({})
+  const [userData, setUserData] = React.useState({});
   const cbAuthnticate = useCallback((data) => {
     localStorage.setItem('jwt', data.token)
     setLoggedIn(true);
@@ -154,13 +152,12 @@ function App() {
         throw new Error('no token')
       }
       const user = await Auth.checkToken(token);
-
       if (!user) {
         throw new Error('invalid user')
       }
       if (user) {
         setLoggedIn(true)
-        setUserData(user.data)
+        setUserData(user)
       }
     } catch (err) {
 
@@ -179,6 +176,7 @@ function App() {
 
     }
   }, [cbAuthnticate])
+
 
   const cbRegister = useCallback(async (email, password) => {
     try {

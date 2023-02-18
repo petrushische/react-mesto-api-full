@@ -1,10 +1,7 @@
-const key = `Bearer ${localStorage.getItem('jwt')}`;
-
 const url = 'https://api.PetroSellinum.nomoredomains.work'
 
 export class Api {
   constructor(options) {
-    this._authorization = options.authorization;
     this._url = options.url;
   }
   _returnPromise(res) {
@@ -14,30 +11,31 @@ export class Api {
     return Promise.reject(res.status)
 
   }
+
   // Запрос получения данных пользователя
-  userInformationGet() {
+  userInformationGet(token) {
     return fetch(`${this._url}/users/me`, {
       headers: {
-        authorization: this._authorization
+        authorization: `Bearer ${token}`
       }
     })
       .then(this._returnPromise)
   }
   // Данные всех карточек
-  cards() {
+  cards(token) {
     return fetch(`${this._url}/cards`, {
       headers: {
-        authorization: this._authorization
+        authorization: `Bearer ${token}`
       }
     })
       .then(this._returnPromise)
   }
   // Сохранение данных пользователя на сервере PATCH
-  userInformationPath({ name, about }) {
+  userInformationPath({ name, about }, token) {
     return fetch(`${this._url}/users/me`, {
       method: 'PATCH',
       headers: {
-        authorization: this._authorization,
+        authorization: `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -48,11 +46,11 @@ export class Api {
       .then(this._returnPromise)
   }
   // Моя карточка
-  cardPost({ name, src }) {
+  cardPost({ name, src }, token) {
     return fetch(`${this._url}/cards`, {
       method: 'POST',
       headers: {
-        authorization: this._authorization,
+        authorization: `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -64,31 +62,31 @@ export class Api {
       .then(this._returnPromise)
   }
   // Запрос удаления карточки
-  deleteCard(id) {
+  deleteCard(id, token) {
     return fetch(`${this._url}/cards/${id}`, {
       method: 'DELETE',
       headers: {
-        authorization: this._authorization,
+        authorization: `Bearer ${token}`,
       }
     })
       .then(this._returnPromise)
   }
   // Работа с лайками карточки
-  changeLikeCard(id, islike) {
+  changeLikeCard(id, islike, token) {
     return fetch(`${this._url}/cards/${id}/likes`, {
       method: islike ? 'DELETE' : 'PUT',
       headers: {
-        authorization: this._authorization,
+        authorization: `Bearer ${token}`,
       }
     })
       .then(this._returnPromise)
   }
   // PATCH Запрос редактирования фотографии
-  changeAvatar(avatar) {
+  changeAvatar(avatar, token) {
     return fetch(`${this._url}/users/me/avatar`, {
       method: 'PATCH',
       headers: {
-        authorization: this._authorization,
+        authorization: `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -100,6 +98,6 @@ export class Api {
 }
 
 
-const api = new Api({ authorization: key, url: url })
+const api = new Api({ url: url })
 
 export default api;
