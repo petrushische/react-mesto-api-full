@@ -8,7 +8,7 @@ const DeleteError = require('../errors/DeleteError');
 
 module.exports.getCards = (req, res, next) => {
   cardSchema.find({})
-    .populate(['owner'])
+    .populate(['owner', 'likes'])
     .then((card) => res.status(200).send(card))
     .catch(next);
 };
@@ -48,7 +48,7 @@ module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
   cardSchema.create({ name, link, owner: req.user._id })
     .then((card) => card.populate('owner'))
-    .then((card) => res.status(200).send(card))
+    .then((card) => res.status(201).send(card))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Ошибка валидации'));
@@ -86,7 +86,7 @@ module.exports.dislikeCard = (req, res, next) => {
     { $pull: { likes: req.user._id } }, // убрать _id из массива
     { new: true },
   )
-    .populate(['owner'])
+    .populate(['owner', 'likes'])
     .then((card) => {
       if (!card) {
         throw new NotFoundError('not found Card');

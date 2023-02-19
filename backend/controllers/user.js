@@ -1,7 +1,5 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 const bcryptjs = require('bcryptjs');
 
-// eslint-disable-next-line import/no-extraneous-dependencies
 const jwt = require('jsonwebtoken');
 
 const NotFoundError = require('../errors/NotFoundError');
@@ -46,7 +44,6 @@ module.exports.createUser = (req, res, next) => {
       userSchema.create({
         name, about, avatar, email, password: hash,
       })
-        // eslint-disable-next-line no-unused-vars
         .then((user) => res.status(200).send({
           name, about, avatar, email,
         }))

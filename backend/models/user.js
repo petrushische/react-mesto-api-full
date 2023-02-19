@@ -1,9 +1,7 @@
 const mongoose = require('mongoose');
 
-// eslint-disable-next-line import/no-extraneous-dependencies
 const bcrypt = require('bcryptjs');
 
-// eslint-disable-next-line import/no-extraneous-dependencies
 const validator = require('validator');
 
 const AuthError = require('../errors/AuthError');
@@ -49,7 +47,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// eslint-disable-next-line func-names
 userSchema.statics.findUserByCredentials = function (email, password) {
   return this.findOne({ email }).select('+password')
     .then((user) => {

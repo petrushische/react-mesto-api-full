@@ -1,6 +1,5 @@
 const express = require('express');
 
-// eslint-disable-next-line import/no-extraneous-dependencies
 const { celebrate, Joi } = require('celebrate');
 
 const router = require('express').Router();
@@ -15,7 +14,7 @@ router.get('/users/me', usersMe);
 
 router.get('/users/:userId', celebrate({
   params: Joi.object().keys({
-    userId: Joi.string().hex().length(24),
+    userId: Joi.string().hex().length(24).required(),
   }),
 }), getUsersId);
 

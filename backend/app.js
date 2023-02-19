@@ -2,7 +2,6 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-// eslint-disable-next-line import/no-extraneous-dependencies
 const { errors, celebrate, Joi } = require('celebrate');
 
 const express = require('express');
@@ -31,7 +30,6 @@ const allowedCors = [
   'http://localhost:3000',
 ];
 
-// eslint-disable-next-line consistent-return
 app.use((req, res, next) => {
   const { method } = req;
   const { origin } = req.headers;
@@ -82,16 +80,14 @@ app.use(auth, userRouter);
 
 app.use(auth, cardRouter);
 
-// eslint-disable-next-line no-unused-vars
-app.use('*', auth, (req, res) => {
-  throw new NotFoundError('page not found');
+app.use('*', auth, (req, res, next) => {
+  next(new NotFoundError('page not found'));
 });
 
 app.use(errorLogger); //  логгер ошибок
 
 app.use(errors());
 
-// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   const { statusCode = 500 } = err;
   const message = statusCode === 500 ? 'На сервере произошла ошибка' : err.message;
@@ -101,6 +97,5 @@ app.use((err, req, res, next) => {
 mongoose.set('strictQuery', false);
 mongoose.connect(MONGO_URL, {});
 app.listen(PORT, () => {
-  // eslint-disable-next-line no-console
   console.log(`Успешное подключение по ${PORT} порту`);
 });
